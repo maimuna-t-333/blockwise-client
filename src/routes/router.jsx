@@ -6,6 +6,9 @@ import {
 import Home from '../pages/Home/Home';
 import Apartments from '../pages/Apartments/Apartments';
 import Dashboard from '../pages/DashBoard/Dashboard';
+import Login from '../pages/Authentication/Login';
+import Register from '../pages/Authentication/Register';
+import MainLayout from '../pages/Layout/MainLayout';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +16,8 @@ const router = createBrowserRouter([
     Component:Home,
     children:[
         {
-
+            index:true,
+            Component:MainLayout
         }
     ]
   },
@@ -24,6 +28,14 @@ const router = createBrowserRouter([
   {
     path:'dashboard',
     Component:Dashboard
+  },
+  {
+    path:'login',
+    Component:Login
+  },
+  {
+    path:'register',
+    Component:Register
   }
 ]);
 

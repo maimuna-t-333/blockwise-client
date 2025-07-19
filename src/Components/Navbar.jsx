@@ -16,16 +16,16 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-[#F9FAFB] shadow-md px-4 md:px-14">
-      <div className="navbar-start">
-        <Link to="/" className="btn btn-ghost normal-case text-xl flex items-center gap-2">
+    <div className="navbar bg-[#f1f5f9] shadow-md px-4 md:px-26">
+      <div className="navbar-start ">
+        <Link to="/" className="normal-case text-xl flex items-center gap-2">
           <img className="w-10 h-10" src="/src/assets/logo.png" alt="Logo" />
           BloCKWise
         </Link>
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-3 text-sm font-medium">
+        <ul className="menu menu-horizontal px-1 gap-3 text-xl font-medium">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/apartments">Apartments</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
@@ -34,7 +34,7 @@ const Navbar = () => {
 
       <div className="navbar-end">
         {!user ? (
-          <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
+          <Link to="/login" className="btn btn-outline text-[14px] ">Login</Link>
         ) : (
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
