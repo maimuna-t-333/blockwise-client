@@ -40,7 +40,7 @@ const Register = () => {
         text: "Welcome to BloCKWise",
       });
 
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       toast.error(err.message);
     }

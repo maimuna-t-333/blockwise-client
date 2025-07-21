@@ -10,7 +10,7 @@ import Footer from "../../Components/Footer";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signInUser, googleSignIn } = useAuth();
+  const { signInUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await googleSignIn();
+      await signInWithGoogle();
       toast.success("Logged in with Google!");
       navigate("/");
     } catch (err) {
