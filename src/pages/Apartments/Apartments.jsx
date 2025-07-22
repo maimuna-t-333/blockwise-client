@@ -14,17 +14,30 @@ const Apartments = () => {
     const [apartments, setApartments] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [minRent, setMinRent] = useState("");
+    const [maxRent, setMaxRent] = useState("");
     const limit = 6;
 
-    useEffect(() => {
-        axios.get(`http://localhost:5000/apartments?page=${page}&limit=${limit}`)
-            .then(res => {
-                console.log("API response:", res.data);
-                setApartments(res.data.apartments);
-                setTotal(res.data.total);
-            })
-            .catch(err => console.error(err));
-    }, [page]);
+
+    const query = {
+        page,
+        limit,
+    };
+
+    if (minRent && maxRent) {
+        query.minRent = minRent;
+        query.maxRent = maxRent;
+    }
+
+    axios
+        .get("http://localhost:5000/apartments", { params: query })
+        .then(res => {
+            console.log("API response:", res.data);
+            setApartments(res.data.apartments);
+            setTotal(res.data.total);
+        })
+        .catch(err => console.error(err));
+
 
     const totalPages = Math.ceil(total / limit);
 
@@ -62,6 +75,30 @@ const Apartments = () => {
     return (
         <div>
             <Navbar />
+            <div className="flex items-center gap-4 mt-12 ml-30">
+                <input
+                    type="number"
+                    placeholder="Minimum Rent"
+                    
+                    value={minRent}
+                    onChange={(e) => setMinRent(e.target.value)}
+                    className="input input-bordered input-sm w-140"
+                />
+                <input
+                    type="number"
+                    placeholder="Maximum Rent"
+                    value={maxRent}
+                    onChange={(e) => setMaxRent(e.target.value)}
+                    className="input input-bordered input-sm w-140"
+                />
+                <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => setPage(1)} // reset to page 1 when searching
+                >
+                    Search
+                </button>
+            </div>
+
             <div className="py-12 px-4 max-w-7xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-8">Available Apartments</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
