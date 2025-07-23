@@ -1,24 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { FaGoogle } from "react-icons/fa";
-// import useAuth from "../hooks/useAuth"; 
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import useUserInfo from "../../hooks/useUserInfo";
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const { signInUser, signInWithGoogle } = useAuth();
+  const { role, loading } = useUserInfo(email);
   const navigate = useNavigate();
+
+  // ✅ Save user to DB if not already present
+  const saveUserToDB = async (user) => {
+    try {
+      await axios.post("http://localhost:5000/users", {
+        name: user.displayName || "No Name",
+        email: user.email,
+      });
+      console.log("User saved to DB:", user.email);
+    } catch (err) {
+      // If already exists or error, do nothing
+      console.log("User save skipped or failed", err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && !loading && role) {
+      if (role === "admin") navigate("/dashboard/admin/profile");
+      else if (role === "member") navigate("/dashboard/member/profile");
+      else navigate("/dashboard/user/profile");
+    }
+  }, [isLoggedIn, loading, role, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInUser(email, password);
+      const res = await signInUser(email, password);
       toast.success("Logged in successfully!");
-      navigate("/");
+
+      // Save user to DB
+      await saveUserToDB(res.user);
+
+      setIsLoggedIn(true); // trigger redirection after role loads
     } catch (err) {
       toast.error(err.message);
     }
@@ -26,9 +56,14 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      const res = await signInWithGoogle();
       toast.success("Logged in with Google!");
-      navigate("/");
+
+      // Save user to DB
+      await saveUserToDB(res.user);
+
+setEmail(res.user.email);
+      setIsLoggedIn(true); // trigger redirection after role loads
     } catch (err) {
       toast.error(err.message);
     }
@@ -36,62 +71,64 @@ const Login = () => {
 
   return (
     <div>
-    <Navbar></Navbar>
-    <div className="py-10 flex items-center justify-center bg-[#f9fafb] px-4 ">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8 space-y-6">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Login </h2>
-        
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input input-bordered w-full"
-              placeholder="you@example.com"
-            />
-          </div>
+      <Navbar />
+      <div className="py-10 flex items-center justify-center bg-[#f9fafb] px-4">
+        <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-8 space-y-6">
+          <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
 
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input input-bordered w-full"
-              placeholder="••••••••"
-            />
-          </div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block mb-1 font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input input-bordered w-full"
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <button type="submit" className="btn btn-outline w-full">Login</button>
-        </form>
+            <div>
+              <label className="block mb-1 font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input input-bordered w-full"
+                placeholder="••••••••"
+              />
+            </div>
 
-        <div className="divider">OR</div>
+            <button type="submit" className="btn btn-outline w-full">Login</button>
+          </form>
 
-        <button
-          onClick={handleGoogleLogin}
-          className="btn w-full flex items-center gap-2 border border-gray-300"
-        >
-          <FaGoogle className="text-lg" />
-          Continue with Google
-        </button>
+          <div className="divider">OR</div>
 
-        <p className="text-sm text-center text-gray-600">
-          Don’t have an account?{" "}
-          <Link to="/register" className=" font-semibold hover:underline">
-            Register here
-          </Link>
-        </p>
+          <button
+            onClick={handleGoogleLogin}
+            className="btn w-full flex items-center gap-2 border border-gray-300"
+          >
+            <FaGoogle className="text-lg" />
+            Continue with Google
+          </button>
+
+          <p className="text-sm text-center text-gray-600">
+            Don’t have an account?{" "}
+            <Link to="/register" className="font-semibold hover:underline">
+              Register here
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
-    <Footer></Footer>
+      <Footer />
     </div>
   );
 };
 
 export default Login;
+
+
 
 
