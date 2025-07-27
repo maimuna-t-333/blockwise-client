@@ -1,4 +1,3 @@
-
 import { Link } from "react-router"; 
 import { FaSignOutAlt } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
@@ -24,7 +23,8 @@ const Navbar = () => {
       ? "/dashboard/admin"
       : role === "member"
       ? "/dashboard/member"
-      : "/dashboard/user";
+      
+      : "/dashboard/user"
 
   return (
     <div className="navbar bg-[#f1f5f9] shadow-md px-4 md:px-26">
@@ -79,6 +79,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-

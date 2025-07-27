@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const Announcement = () => {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/announcements")
-      .then(res => setAnnouncements(res.data))
-      .catch(err => console.error("Error fetching announcements:", err));
+    fetch("http://localhost:5000/api/announcements")
+      .then(res => res.json())
+      .then(data => setAnnouncements(data));
   }, []);
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Announcements</h2>
-      {announcements.length === 0 && <p>No announcements found.</p>}
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-4">Announcements</h2>
       <ul className="space-y-4">
-        {announcements.map((ann) => (
-          <li key={ann._id} className="border p-4 rounded shadow-sm">
-            <p>{ann.message || ann.title || "No content"}</p>
+        {announcements.map((a) => (
+          <li key={a._id} className="p-4 border rounded shadow">
+            <h3 className="text-lg font-semibold">{a.title}</h3>
+            <p>{a.message}</p>
             <small className="text-gray-500">
-              {new Date(ann.createdAt).toLocaleDateString()}
+              {new Date(a.date).toLocaleDateString()}
             </small>
           </li>
         ))}
@@ -29,3 +28,4 @@ const Announcement = () => {
 };
 
 export default Announcement;
+

@@ -45,10 +45,10 @@ const Login = () => {
       const res = await signInUser(email, password);
       toast.success("Logged in successfully!");
 
-      // Save user to DB
+     
       await saveUserToDB(res.user);
-
-      setIsLoggedIn(true); // trigger redirection after role loads
+      
+      setIsLoggedIn(true); 
     } catch (err) {
       toast.error(err.message);
     }
@@ -63,7 +63,7 @@ const Login = () => {
       await saveUserToDB(res.user);
 
 setEmail(res.user.email);
-      setIsLoggedIn(true); // trigger redirection after role loads
+      setIsLoggedIn(true);
     } catch (err) {
       toast.error(err.message);
     }

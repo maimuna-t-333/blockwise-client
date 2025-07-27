@@ -1,11 +1,85 @@
-import React from 'react';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const AgreementRequests = () => {
-    return (
-        <div>
-            
+  const [requests, setRequests] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/agreements")
+      .then(res => {
+        const pending = res.data.filter(req => req.status === "pending");
+        setRequests(pending);
+      });
+  }, []);
+
+  const handleDecision = async (id, email, accepted) => {
+    try {
+      await axios.patch(`http://localhost:5000/agreements/respond/${id}`, {
+        accepted,
+        email,
+      });
+
+      toast.success(`Request ${accepted ? "accepted" : "rejected"}`);
+      setRequests(prev => prev.filter(req => req._id !== id));
+    } catch (err) {
+      toast.error("Failed to process request");
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold mb-4">Agreement Requests</h2>
+
+      {requests.length === 0 ? (
+        <p>No pending requests.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Floor</th>
+                <th>Block</th>
+                <th>Room</th>
+                <th>Rent</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map(req => (
+                <tr key={req._id}>
+                  <td>{req.name}</td>
+                  <td>{req.email}</td>
+                  <td>{req.floorNo}</td>
+                  <td>{req.blockName}</td>
+                  <td>{req.apartmentNo}</td>
+                  <td>{req.rent}</td>
+                  <td>{new Date(req._id.toString().substring(0, 8) * 1000).toLocaleDateString()}</td>
+                  <td className="flex gap-2">
+                    <button
+                      onClick={() => handleDecision(req._id, req.email, true)}
+                      className="btn btn-sm btn-success"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleDecision(req._id, req.email, false)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default AgreementRequests;

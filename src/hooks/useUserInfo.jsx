@@ -1,30 +1,40 @@
 import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
-import axios from "axios";
 
 const useUserInfo = () => {
-  const { user, loading: authLoading } = useAuth();
-  const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuth();
+  const [role, setRole] = useState("user"); 
+  const [userInfoLoading, setUserInfoLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && user?.email) {
-      axios
-        .get(`http://localhost:5000/users/${user.email}`)
-        .then((res) => {
-          setUserInfo(res.data);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
-  }, [user, authLoading]);
+    const fetchRole = async () => {
+      if (user?.email) {
+        try {
+          
+          const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
+          const agreement = await res.json();
 
-  return {
-    userInfo,
-    loading,
-    role: userInfo?.role,
-  };
+          if (agreement && agreement.email) {
+            setRole("member");
+          } else {
+            setRole("user"); 
+          }
+        } catch (err) {
+          console.error("Error checking agreement", err);
+        } finally {
+          setUserInfoLoading(false);
+        }
+      }
+    };
+
+    if (!loading) {
+      fetchRole();
+    }
+  }, [user, loading]);
+
+  return { role, user, loading: loading || userInfoLoading };
 };
 
 export default useUserInfo;
+
 

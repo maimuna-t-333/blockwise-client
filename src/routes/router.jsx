@@ -1,114 +1,141 @@
-import React from 'react';
+// src/routes/router.jsx
 import {
   createBrowserRouter,
-  RouterProvider,
 } from "react-router";
-import Home from '../pages/Home/Home';
-import Apartments from '../pages/Apartments/Apartments';
-// import Dashboard from '../pages/DashBoard/Dashboard';
-import Login from '../pages/Authentication/Login';
-import Register from '../pages/Authentication/Register';
-import MainLayout from '../pages/Layout/MainLayout';
-import DashboardLayout from '../pages/Layout/DashboardLayOut';
-import PrivateRoute from './Privateroute';
-import Profile from '../pages/DashBoard/Profile';
-import Announcement from '../pages/DashBoard/Announcement';
-import RoleRoute from './RoleRoute';
-import MemberProfile from '../pages/DashBoard/MemberProfile';
-import MakePayment from '../pages/DashBoard/MakePayment';
-import PaymentHistory from '../pages/DashBoard/PaymentHistory';
-import AdminProfile from '../pages/DashBoard/AdminProfile';
-import ManageMembers from '../pages/DashBoard/ManageMembers';
-import MakeAnnouncement from '../pages/DashBoard/MakeAnnouncement';
-// import AgreementAnnouncement from '../pages/DashBoard/AgreementAnnouncement';
-import AgreementRequests from '../pages/DashBoard/AgreementRequests';
-import ManageCoupon from '../pages/DashBoard/ManageCoupon';
+
+import MainLayout from "../pages/Layout/MainLayout";
+import Home from "../pages/Home/Home";
+import Apartments from "../pages/Apartments/Apartments";
+import Login from "../pages/Authentication/Login";
+import Register from "../pages/Authentication/Register";
+import PrivateRoute from "./Privateroute";
+import RoleRoute from "./RoleRoute";
+import DashboardRedirect from "../pages/Layout/DashboardRedirect";
+import DashboardLayout from "../pages/Layout/DashboardLayOut";
+
+// User Dashboard Pages
+import UserProfile from "../pages/DashBoard/Profile";
+import UserAnnouncements from "../pages/DashBoard/Announcement";
+
+// Member Dashboard Pages
+import MemberProfile from "../pages/DashBoard/MemberProfile";
+import MakePayment from "../pages/DashBoard/MakePayment";
+import PaymentHistory from "../pages/DashBoard/PaymentHistory";
+
+// Admin Dashboard Pages
+import AdminProfile from "../pages/DashBoard/AdminProfile";
+import ManageMembers from "../pages/DashBoard/ManageMembers";
+import MakeAnnouncement from "../pages/DashBoard/MakeAnnouncement";
+import AgreementRequests from "../pages/DashBoard/AgreementRequests";
+import ManageCoupon from "../pages/DashBoard/ManageCoupon";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    Component:Home,
-    children:[
-        {
-            index:true,
-            Component:MainLayout
-        }
-    ]
+    element: <Home></Home>,
+    children: [
+      {
+        index: true,
+        element: <MainLayout></MainLayout>,
+      },
+      {
+        path: "apartments",
+        element: <Apartments />,
+      },
+    ],
   },
   {
-    path:'apartments',
-    Component:Apartments
+    path: "/login",
+    element: <Login />,
   },
   {
-    path:'dashboard/user',
-    element: <PrivateRoute><RoleRoute allowedRole="user"><DashboardLayout></DashboardLayout></RoleRoute></PrivateRoute>,
-    children:[
-        {
-            path:'profile',
-            Component:Profile
-        },
-        {
-            path:'announcements',
-            Component:Announcement
-        }
-    ]
+    path: "/register",
+    element: <Register />,
   },
   {
-    path:'dashboard/member',
-    element:<PrivateRoute><RoleRoute allowedRole="member"><DashboardLayout></DashboardLayout></RoleRoute></PrivateRoute>,
-    children:[
-        {
-            path:'profile',
-            Component:MemberProfile
-        },
-        {
-            path:'payment',
-            Component:MakePayment
-        },
-        {
-            path:'history',
-            Component:PaymentHistory
-        },
-        {
-            path:'announcements',
-            Component:Announcement
-        }
-    ]
+    path: "dashboard",
+    element: <PrivateRoute><DashboardRedirect /></PrivateRoute>,
   },
+
+  // User Dashboard
   {
-path:'dashboard/admin',
-element:<PrivateRoute><RoleRoute allowedRole="admin"><DashboardLayout></DashboardLayout></RoleRoute></PrivateRoute>,
-children:[
-    {
-        path:'profile',
-        Component:AdminProfile
-    },
-    {
-        path:'members',
-        Component:ManageMembers
-    },
-    {
-        path:'announcements',
-        Component:MakeAnnouncement
-    },
-    {
-        path:'requests',
-        Component:AgreementRequests
-    },
-    {
-        path:'coupons',
-        Component:ManageCoupon
-    }
-]
+    path: "dashboard/user",
+    element: <PrivateRoute><RoleRoute allowedRole="user"><DashboardLayout /></RoleRoute></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <UserProfile />,
+      },
+      {
+        path: "profile",
+        element: <UserProfile />,
+      },
+      {
+        path: "announcements",
+        element: <UserAnnouncements />,
+      },
+    ],
   },
+
+  // Member Dashboard
   {
-    path:'login',
-    Component:Login
+    path: "dashboard/member",
+    element: <PrivateRoute><RoleRoute allowedRole="member"><DashboardLayout /></RoleRoute></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <MemberProfile />,
+      },
+      {
+        path: "profile",
+        element: <MemberProfile />,
+      },
+      {
+        path: "payment",
+        element: <MakePayment />,
+      },
+      {
+        path: "history",
+        element: <PaymentHistory />,
+      },
+      {
+        path: "announcements",
+        element: <UserAnnouncements />,
+      },
+    ],
   },
+
+  // Admin Dashboard
   {
-    path:'register',
-    Component:Register
-  }
+    path: "dashboard/admin",
+    element: <PrivateRoute><RoleRoute allowedRole="admin"><DashboardLayout /></RoleRoute></PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <AdminProfile />,
+      },
+      {
+        path: "profile",
+        element: <AdminProfile />,
+      },
+      {
+        path: "members",
+        element: <ManageMembers />,
+      },
+      {
+        path: "announcements",
+        element: <MakeAnnouncement />,
+      },
+      {
+        path: "requests",
+        element: <AgreementRequests />,
+      },
+      {
+        path: "coupons",
+        element: <ManageCoupon />,
+      },
+    ],
+  },
 ]);
 
 export default router;
