@@ -36,7 +36,7 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-3 text-xl font-medium">
+        <ul className=" menu-horizontal px-1 gap-10 text-xl font-medium">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/apartments">Apartments</Link></li>
           {user && !loading && (
@@ -58,8 +58,8 @@ const Navbar = () => {
                 />
               </div>
             </div>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52">
-              <li className="text-center text-gray-700 font-semibold pointer-events-none">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-4 shadow bg-base-100 rounded-box w-52">
+              <li className="pr-4 text-gray-700 font-semibold pointer-events-none">
                 {user.displayName || "User"}
               </li>
               {!loading && (
