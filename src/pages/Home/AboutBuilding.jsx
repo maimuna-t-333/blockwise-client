@@ -11,9 +11,9 @@ const AboutBuilding = () => {
       <div className="max-w-6xl mx-auto text-center">
         <motion.h2
           className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay:0.2}}
         >
           Discover BloCKWise Living
         </motion.h2>
