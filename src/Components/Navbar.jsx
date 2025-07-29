@@ -17,7 +17,7 @@ const Navbar = () => {
       });
   };
 
-  // Determine role-based dashboard path
+
   const dashboardPath =
     role === "admin"
       ? "/dashboard/admin"

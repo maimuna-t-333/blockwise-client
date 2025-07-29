@@ -7,25 +7,32 @@ const useUserInfo = () => {
   const [userInfoLoading, setUserInfoLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRole = async () => {
-      if (user?.email) {
-        try {
-          
-          const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
-          const agreement = await res.json();
+const fetchRole = async () => {
+  if (user?.email) {
+    try {
+      const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
 
-          if (agreement && agreement.email) {
-            setRole("member");
-          } else {
-            setRole("user"); 
-          }
-        } catch (err) {
-          console.error("Error checking agreement", err);
-        } finally {
-          setUserInfoLoading(false);
-        }
+      // Check status before trying to parse
+      if (!res.ok) {
+        console.warn("Non-OK response from agreement API:", res.status);
+        setRole("user");
+        return;
       }
-    };
+
+      const agreement = await res.json();
+      if (agreement && agreement.email) {
+        setRole("member");
+      } else {
+        setRole("user");
+      }
+    } catch (err) {
+      console.error("Error checking agreement", err);
+    } finally {
+      setUserInfoLoading(false);
+    }
+  }
+};
+
 
     if (!loading) {
       fetchRole();

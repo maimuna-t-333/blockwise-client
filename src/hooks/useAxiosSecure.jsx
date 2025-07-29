@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000/api", // Adjust to match your backend prefix
+  baseURL: "http://localhost:5000/api", 
   withCredentials: true,
 });
 

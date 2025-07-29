@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import Navbar from "../../Components/Navbar";
-import Footer from "../../Components/Footer";
+// import Navbar from "../../Components/Navbar";
+// import Footer from "../../Components/Footer";
 import useAuth from "../../hooks/useAuth";
 
 
@@ -29,8 +29,7 @@ const Apartments = () => {
         query.maxRent = maxRent;
     }
 
-    axios
-        .get("http://localhost:5000/apartments", { params: query })
+    axios.get("http://localhost:5000/apartments", { params: query })
         .then(res => {
             console.log("API response:", res.data);
             setApartments(res.data.apartments);
@@ -74,7 +73,7 @@ const Apartments = () => {
 
     return (
         <div>
-            <Navbar />
+            
             <div className="flex items-center gap-4 mt-12 ml-30">
                 <input
                     type="number"
@@ -148,7 +147,7 @@ const Apartments = () => {
                 </button>
             </div>
 
-            <Footer />
+          
         </div>
     );
 };
