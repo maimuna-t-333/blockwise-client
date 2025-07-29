@@ -2,46 +2,48 @@ import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
 
 const useUserInfo = () => {
-  const { user, loading } = useAuth();
-  const [role, setRole] = useState("user"); 
+  const { user, loading: authLoading } = useAuth();
+  const [role, setRole] = useState(null);
   const [userInfoLoading, setUserInfoLoading] = useState(true);
 
   useEffect(() => {
-const fetchRole = async () => {
-  if (user?.email) {
-    try {
-      const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
-
-      // Check status before trying to parse
-      if (!res.ok) {
-        console.warn("Non-OK response from agreement API:", res.status);
+    const fetchRole = async () => {
+      if (!user?.email) {
+        // No user or no email means default role 'user'
         setRole("user");
+        setUserInfoLoading(false);
         return;
       }
 
-      const agreement = await res.json();
-      if (agreement && agreement.email) {
-        setRole("member");
-      } else {
+      try {
+        const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
+
+        if (!res.ok) {
+          console.warn("Non-OK response from agreement API:", res.status);
+          setRole("user");
+        } else {
+          const agreement = await res.json();
+          if (agreement && agreement.email) {
+            setRole("member");
+          } else {
+            setRole("user");
+          }
+        }
+      } catch (err) {
+        console.error("Error checking agreement", err);
         setRole("user");
+      } finally {
+        setUserInfoLoading(false);
       }
-    } catch (err) {
-      console.error("Error checking agreement", err);
-    } finally {
-      setUserInfoLoading(false);
-    }
-  }
-};
+    };
 
-
-    if (!loading) {
+    if (!authLoading) {
+      setUserInfoLoading(true); // Start loading before fetch
       fetchRole();
     }
-  }, [user, loading]);
+  }, [user, authLoading]);
 
-  return { role, user, loading: loading || userInfoLoading };
+  return { role, user, loading: authLoading || userInfoLoading };
 };
 
 export default useUserInfo;
-
-
