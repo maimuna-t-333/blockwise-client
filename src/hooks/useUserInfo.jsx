@@ -4,7 +4,7 @@ import useAxios from "./useAxios";
 
 const ADMIN_EMAIL = "admin@example.com";
 
-const useUserInfo = () => {
+const useUserInfo = (refetchTrigger = 0) => {
   const { user } = useAuth();
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,11 +18,10 @@ const useUserInfo = () => {
       }
 
       try {
-        // 🔐 If email matches admin, assign role directly
         if (user.email === ADMIN_EMAIL) {
           setRole("admin");
         } else {
-          const res = await axios.get(`/users/role?email=${user.email}`);
+          const res = await axios.get(`/users/${user.email}`);
           setRole(res.data?.role || "user");
         }
       } catch (err) {
@@ -34,11 +33,12 @@ const useUserInfo = () => {
     };
 
     fetchRole();
-  }, [user?.email, axios]);
+  }, [user?.email, refetchTrigger]);
 
   return { role, loading };
 };
 
 export default useUserInfo;
+
 
 

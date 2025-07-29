@@ -3,7 +3,7 @@ import useAuth from "../hooks/useAuth"; // to get current user
 
 const RoleRoute = ({ children, allowedRole }) => {
   const { user, loading: authLoading } = useAuth(); // get logged-in user
-  const { role, loading: roleLoading } = useUserInfo(user?.email); // pass email
+  const { role, loading: roleLoading } = useUserInfo(); // pass email
 
   if (authLoading || roleLoading) return <span>Loading...</span>;
 

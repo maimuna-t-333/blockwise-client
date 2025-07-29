@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { FiUser, FiDollarSign, FiClock, FiUsers, FiSpeaker, FiFileText, FiGift } from "react-icons/fi";
 import useUserInfo from "../../hooks/useUserInfo";
 
@@ -12,6 +12,8 @@ const Sidebar = () => {
 
   return (
     <div className="w-full md:w-64 h-full p-4 bg-base-100 border-r">
+      
+      
       <h2 className="text-xl font-bold mb-4 text-center">Dashboard</h2>
       <nav className="flex flex-col gap-2">
         {/* USER ROLE */}
@@ -22,6 +24,9 @@ const Sidebar = () => {
             </NavLink>
             <NavLink to="/dashboard/user/announcements" className={linkClass}>
               <FiSpeaker /> Announcements
+            </NavLink>
+            <NavLink to="/" className={linkClass}>
+               Back to Home
             </NavLink>
           </>
         )}
@@ -40,6 +45,9 @@ const Sidebar = () => {
             </NavLink>
             <NavLink to="/dashboard/member/announcements" className={linkClass}>
               <FiSpeaker /> Announcements
+            </NavLink>
+            <NavLink to="/" className={linkClass}>
+               Back to Home
             </NavLink>
           </>
         )}
@@ -62,9 +70,13 @@ const Sidebar = () => {
             <NavLink to="/dashboard/admin/coupons" className={linkClass}>
               <FiGift /> Manage Coupons
             </NavLink>
+            <NavLink to="/" className={linkClass}>
+               Back to Home
+            </NavLink>
           </>
         )}
       </nav>
+
     </div>
   );
 };

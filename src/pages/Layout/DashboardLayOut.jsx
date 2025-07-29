@@ -51,6 +51,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex">
+      
       <Sidebar role={role} />
       <div className="flex-1 p-4">
         <Outlet context={{ role }} />
