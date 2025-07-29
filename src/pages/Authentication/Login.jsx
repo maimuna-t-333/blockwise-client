@@ -6,52 +6,72 @@ import useAuth from "../../hooks/useAuth";
 import useUserInfo from "../../hooks/useUserInfo";
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
-import axios from "axios";
+import useAxios from "../../hooks/useAxios";
+
+const ADMIN_EMAIL = "admin@example.com";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
 
   const { signInUser, signInWithGoogle } = useAuth();
   const { role, loading } = useUserInfo();
   const navigate = useNavigate();
+  const axios = useAxios();
 
-  // ✅ Save user to DB if not already present
   const saveUserToDB = async (user) => {
     try {
-      await axios.post("http://localhost:5000/users", {
+      await axios.post("/users", {
         name: user.displayName || "No Name",
         email: user.email,
       });
       console.log("User saved to DB:", user.email);
     } catch (err) {
-      // If already exists or error, do nothing
-      console.log("User save skipped or failed", err.message);
+      console.log("User save failed/skipped:", err.message);
     }
   };
 
   useEffect(() => {
-    console.log({ isLoggedIn, loading, role });
     if (isLoggedIn && !loading && role) {
-      if (role === "admin") navigate("/dashboard/admin/profile");
-      else if (role === "member") navigate("/dashboard/member/profile");
-      else navigate("/dashboard/user/profile");
+      if (role === "admin" || adminLoggedIn) {
+        navigate("/dashboard/admin/profile");
+      } else if (role === "member") {
+        navigate("/dashboard/member/profile");
+      } else {
+        navigate("/dashboard/user/profile");
+      }
     }
-  }, [isLoggedIn, loading, role, navigate]);
+  }, [isLoggedIn, loading, role, adminLoggedIn, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const res = await signInUser(email, password);
-      toast.success("Logged in successfully!");
+      if (email === ADMIN_EMAIL) {
+        // Admin login flow
+        const res = await axios.post("/admin-login", { email, password });
 
+        if (res.data.success) {
+          toast.success("Admin logged in successfully!");
+          setIsLoggedIn(true);
+          setAdminLoggedIn(true);
+        } else {
+          toast.error(res.data.message || "Invalid admin credentials");
+          setIsLoggedIn(false);
+        }
+      } else {
+        // Normal user login flow
+        const res = await signInUser(email, password);
+        toast.success("User logged in successfully!");
 
-      await saveUserToDB(res.user);
-
-      setIsLoggedIn(true);
+        await saveUserToDB(res.user);
+        setIsLoggedIn(true);
+      }
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message || err.message || "Login failed");
+      setIsLoggedIn(false);
     }
   };
 
@@ -59,10 +79,7 @@ const Login = () => {
     try {
       const res = await signInWithGoogle();
       toast.success("Logged in with Google!");
-
-      // Save user to DB
       await saveUserToDB(res.user);
-    
       setEmail(res.user.email);
       setIsLoggedIn(true);
     } catch (err) {
@@ -102,8 +119,11 @@ const Login = () => {
               />
             </div>
 
-            <button type="submit" className="btn btn-outline w-full">Login</button>
+            <button type="submit" className="btn btn-outline w-full">
+              Login
+            </button>
           </form>
+
 
           <div className="divider">OR</div>
 
@@ -129,7 +149,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-

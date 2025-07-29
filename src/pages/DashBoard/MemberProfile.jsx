@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-// import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MemberProfile = () => {
   const { user } = useAuth();
@@ -13,7 +12,9 @@ const MemberProfile = () => {
     if (user?.email) {
       axiosSecure.get(`/agreements?email=${user.email}`)
         .then(res => {
-          setAgreement(res.data);
+          console.log("Fetched agreement:", res.data);
+          const agreementData = Array.isArray(res.data) ? res.data[0] : res.data;
+          setAgreement(agreementData);
           setLoading(false);
         })
         .catch(() => setLoading(false));
@@ -31,12 +32,10 @@ const MemberProfile = () => {
       <p><strong>Block:</strong> {agreement.blockName}</p>
       <p><strong>Floor:</strong> {agreement.floorNo}</p>
       <p><strong>Apartment:</strong> {agreement.apartmentNo}</p>
-      <p><strong>Rent:</strong> ${Number(agreement.rent).toFixed(2)}</p>
+      <p><strong>Rent:</strong> ৳{Number(agreement.rent).toFixed(2)}</p>
       <p><strong>Status:</strong> {agreement.status}</p>
     </div>
   );
 };
 
 export default MemberProfile;
-
-

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-// import useAuth from "@/hooks/useAuth"; // your custom auth hook
+
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-// import useAxiosSecure from "@/hooks/useAxiosSecure";
+
 
 const AdminProfile = () => {
   const { user } = useAuth();

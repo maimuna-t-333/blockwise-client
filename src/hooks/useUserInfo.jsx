@@ -1,49 +1,44 @@
 import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
+import useAxios from "./useAxios";
+
+const ADMIN_EMAIL = "admin@example.com";
 
 const useUserInfo = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const [role, setRole] = useState(null);
-  const [userInfoLoading, setUserInfoLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const axios = useAxios();
 
   useEffect(() => {
     const fetchRole = async () => {
       if (!user?.email) {
-        // No user or no email means default role 'user'
-        setRole("user");
-        setUserInfoLoading(false);
+        setLoading(false);
         return;
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/api/agreements?email=${user.email}`);
-
-        if (!res.ok) {
-          console.warn("Non-OK response from agreement API:", res.status);
-          setRole("user");
+        // 🔐 If email matches admin, assign role directly
+        if (user.email === ADMIN_EMAIL) {
+          setRole("admin");
         } else {
-          const agreement = await res.json();
-          if (agreement && agreement.email) {
-            setRole("member");
-          } else {
-            setRole("user");
-          }
+          const res = await axios.get(`/users/role?email=${user.email}`);
+          setRole(res.data?.role || "user");
         }
       } catch (err) {
-        console.error("Error checking agreement", err);
+        console.error("Failed to fetch role", err);
         setRole("user");
       } finally {
-        setUserInfoLoading(false);
+        setLoading(false);
       }
     };
 
-    if (!authLoading) {
-      setUserInfoLoading(true); // Start loading before fetch
-      fetchRole();
-    }
-  }, [user, authLoading]);
+    fetchRole();
+  }, [user?.email, axios]);
 
-  return { role, user, loading: authLoading || userInfoLoading };
+  return { role, loading };
 };
 
 export default useUserInfo;
+
+
