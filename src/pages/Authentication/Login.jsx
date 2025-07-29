@@ -14,7 +14,7 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { signInUser, signInWithGoogle } = useAuth();
-  const { role, loading } = useUserInfo(email);
+  const { role, loading } = useUserInfo();
   const navigate = useNavigate();
 
   // ✅ Save user to DB if not already present
@@ -32,6 +32,7 @@ const Login = () => {
   };
 
   useEffect(() => {
+    console.log({ isLoggedIn, loading, role });
     if (isLoggedIn && !loading && role) {
       if (role === "admin") navigate("/dashboard/admin/profile");
       else if (role === "member") navigate("/dashboard/member/profile");
@@ -45,10 +46,10 @@ const Login = () => {
       const res = await signInUser(email, password);
       toast.success("Logged in successfully!");
 
-     
+
       await saveUserToDB(res.user);
-      
-      setIsLoggedIn(true); 
+
+      setIsLoggedIn(true);
     } catch (err) {
       toast.error(err.message);
     }
@@ -61,8 +62,8 @@ const Login = () => {
 
       // Save user to DB
       await saveUserToDB(res.user);
-
-setEmail(res.user.email);
+    
+      setEmail(res.user.email);
       setIsLoggedIn(true);
     } catch (err) {
       toast.error(err.message);

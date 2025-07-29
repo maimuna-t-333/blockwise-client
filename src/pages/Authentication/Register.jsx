@@ -11,7 +11,7 @@ import Footer from '../../Components/Footer';
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { createUser,logout } = useAuth();
+  const { createUser } = useAuth();
   const navigate = useNavigate();
 
 const onSubmit = async (data) => {
@@ -28,9 +28,6 @@ const onSubmit = async (data) => {
 
     axios.post('http://localhost:5000/users', savedUser);
     navigate('/login')
-
-    // Force logout after registration
-    await logout(); 
 
     toast.success('Registration successful. Please login.');
   } catch (error) {
@@ -100,11 +97,11 @@ const onSubmit = async (data) => {
         </form>
 
         <p className="text-center mt-2">
-          Already have an account? <Link to="/login" className="link link-primary">Login</Link>
+          Already have an account? <Link to="/login" className="text-gray-900 font-semibold underline">Login</Link>
         </p>
 
         
-        {/* <SocialLogin /> */}
+
       </div>
     </div>
     <Footer></Footer>
