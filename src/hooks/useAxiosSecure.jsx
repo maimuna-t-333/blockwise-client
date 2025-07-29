@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000/api", 
+  baseURL: "https://blockwise-server.vercel.app/api", 
   withCredentials: true,
 });
 

@@ -6,7 +6,7 @@ const AgreementRequests = () => {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/agreements")
+    axios.get("https://blockwise-server.vercel.app/agreements")
       .then(res => {
         const pending = res.data.filter(req => req.status === "pending");
         setRequests(pending);
@@ -15,7 +15,7 @@ const AgreementRequests = () => {
 
   const handleDecision = async (id, email, accepted) => {
     try {
-      await axios.patch(`http://localhost:5000/agreements/respond/${id}`, {
+      await axios.patch(`https://blockwise-server.vercel.app/agreements/respond/${id}`, {
         accepted,
         email,
       });

@@ -12,7 +12,7 @@ const ManageCoupon = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/coupons").then((res) => {
+    axios.get("https://blockwise-server.vercel.app/coupons").then((res) => {
       setCoupons(res.data);
     });
   }, []);
@@ -20,13 +20,13 @@ const ManageCoupon = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/coupons", formData);
+      await axios.post("https://blockwise-server.vercel.app/coupons", formData);
       toast.success("Coupon added");
       setModalOpen(false);
       setFormData({ code: "", discount: "", description: "" });
 
       // Refresh coupon list
-      const res = await axios.get("http://localhost:5000/coupons");
+      const res = await axios.get("https://blockwise-server.vercel.app/coupons");
       setCoupons(res.data);
     } catch {
       toast.error("Failed to add coupon");

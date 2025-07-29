@@ -9,7 +9,7 @@ const ManageMembers = () => {
   const fetchMembers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/users?role=member");
+      const res = await axios.get("https://blockwise-server.vercel.app/users?role=member");
       setMembers(res.data);
     } catch (err) {
       toast.error("Failed to load members");
@@ -23,7 +23,7 @@ const ManageMembers = () => {
     if (!confirm) return;
 
     try {
-      const res = await axios.patch(`http://localhost:5000/users/downgrade/${email}`);
+      const res = await axios.patch(`https://blockwise-server.vercel.app/users/downgrade/${email}`);
       if (res.data.modifiedCount > 0) {
         toast.success("Member removed successfully (role changed to 'user')");
         fetchMembers(); // Refresh the list

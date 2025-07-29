@@ -27,7 +27,7 @@ const Apartments = () => {
     }
 
     axios
-      .get("http://localhost:5000/apartments", { params: query })
+      .get("https://blockwise-server.vercel.app/apartments", { params: query })
       .then((res) => {
         setApartments(res.data.apartments);
         setTotal(res.data.total);
@@ -54,7 +54,7 @@ const Apartments = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/agreements", agreementData);
+      const response = await axios.post("https://blockwise-server.vercel.app/agreements", agreementData);
       if (response.data.insertedId) {
         Swal.fire({
           icon: "success",
@@ -70,51 +70,59 @@ const Apartments = () => {
   };
 
   return (
-    <div>
-      <div className="flex items-center gap-4 mt-12 ml-30">
+    <div className="px-4 py-6 max-w-7xl mx-auto">
+      {/* Filter section */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 justify-center mt-8 mb-6">
         <input
           type="number"
           placeholder="Minimum Rent"
           value={minRent}
           onChange={(e) => setMinRent(e.target.value)}
-          className="input input-bordered input-sm w-140"
+          className="input input-bordered input-sm w-full sm:w-40"
         />
         <input
           type="number"
           placeholder="Maximum Rent"
           value={maxRent}
           onChange={(e) => setMaxRent(e.target.value)}
-          className="input input-bordered input-sm w-140"
+          className="input input-bordered input-sm w-full sm:w-40"
         />
-        <button className="btn btn-outline btn-sm" onClick={() => setPage(1)}>
+        <button
+          className="btn btn-outline btn-sm w-full sm:w-auto"
+          onClick={() => setPage(1)}
+        >
           Search
         </button>
       </div>
 
-      <div className="py-12 px-4 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-8">Available Apartments</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {apartments.map((apt, idx) => (
-            <div key={idx} className="bg-white rounded-xl shadow p-4">
-              <img
-                src={apt.apartmentImage}
-                alt="Apartment"
-                className="rounded-lg mb-4 h-48 w-full object-cover"
-              />
-              <p><strong>Floor:</strong> {apt.floorNo}</p>
-              <p><strong>Block:</strong> {apt.blockName}</p>
-              <p><strong>Apartment No:</strong> {apt.apartmentNo}</p>
-              <p><strong>Rent:</strong> {apt.rent}৳</p>
-              <button className="btn btn-outline btn-sm mt-4" onClick={() => handleAgreement(apt)}>
-                Apply for Agreement
-              </button>
-            </div>
-          ))}
-        </div>
+      {/* Heading */}
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">Available Apartments</h2>
+
+      {/* Apartment Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {apartments.map((apt, idx) => (
+          <div key={idx} className="bg-white rounded-xl shadow-md p-4">
+            <img
+              src={apt.apartmentImage}
+              alt="Apartment"
+              className="rounded-lg mb-4 h-48 w-full object-cover"
+            />
+            <p><strong>Floor:</strong> {apt.floorNo}</p>
+            <p><strong>Block:</strong> {apt.blockName}</p>
+            <p><strong>Apartment No:</strong> {apt.apartmentNo}</p>
+            <p><strong>Rent:</strong> {apt.rent}৳</p>
+            <button
+              className="btn btn-outline btn-sm mt-4 w-full"
+              onClick={() => handleAgreement(apt)}
+            >
+              Apply for Agreement
+            </button>
+          </div>
+        ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-8 space-x-2">
+      {/* Pagination */}
+      <div className="flex flex-wrap justify-center items-center mt-10 gap-2">
         <button
           className="btn btn-outline btn-sm"
           disabled={page === 1}
@@ -146,3 +154,4 @@ const Apartments = () => {
 };
 
 export default Apartments;
+

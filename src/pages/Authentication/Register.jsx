@@ -26,7 +26,7 @@ const onSubmit = async (data) => {
       photoURL: data.photoURL
     };
 
-    axios.post('http://localhost:5000/users', savedUser);
+    axios.post('https://blockwise-server.vercel.app/users', savedUser);
     navigate('/login')
 
     toast.success('Registration successful. Please login.');

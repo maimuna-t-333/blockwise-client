@@ -1,6 +1,9 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router";
+import banner1 from '../../assets/Build1.jpg'
+import banner2 from '../../assets/Build2.jpg'
+import banner3 from '../../assets/Build3.jpg'
 
 const Banner = () => {
   return (
@@ -19,7 +22,7 @@ const Banner = () => {
           {/* Slide 1 */}
           <div className="relative">
             <img
-              src="/src/assets/Build1.jpg"
+              src={banner1}
               alt="Modern Apartments"
               className="object-cover h-[400px] md:h-[600px] w-full rounded-lg"
             />
@@ -44,7 +47,7 @@ const Banner = () => {
           {/* Slide 2 */}
           <div className="relative">
             <img
-              src="/src/assets/Build2.jpg"
+              src={banner2}
               alt="Secure Buildings"
               className="object-cover h-[400px] md:h-[600px] w-full rounded-lg"
             />
@@ -69,7 +72,7 @@ const Banner = () => {
           {/* Slide 3 */}
           <div className="relative">
             <img
-              src="/src/assets/Build3.jpg"
+              src={banner3}
               alt="Smart Management"
               className="object-cover h-[400px] md:h-[600px] w-full rounded-lg"
             />

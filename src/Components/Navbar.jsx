@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { FaSignOutAlt } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import useUserInfo from "../hooks/useUserInfo";
+import logo from '../../src/assets/logo.png'
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -30,7 +31,7 @@ const Navbar = () => {
     <div className="navbar bg-[#f1f5f9] shadow-md px-4 md:px-26">
       <div className="navbar-start">
         <Link to="/" className="normal-case text-xl flex items-center gap-2">
-          <img className="w-10 h-10" src="/src/assets/logo.png" alt="Logo" />
+          <img className="w-10 h-10" src={logo} alt="Logo" />
           BloCKWise
         </Link>
       </div>

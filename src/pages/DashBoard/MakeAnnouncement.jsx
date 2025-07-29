@@ -15,7 +15,7 @@ const MakeAnnouncement = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/announcements", {
+      const res = await axios.post("https://blockwise-server.vercel.app/announcements", {
         title,
         description,
       });

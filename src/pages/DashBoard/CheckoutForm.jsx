@@ -1,6 +1,7 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
-import useAxios from "../hooks/useAxios"; // your custom axios hook
+import useAxios from "../../hooks/useAxios";
+// import useAxios from "../hooks/useAxios"; // your custom axios hook
 
 const CheckoutForm = ({ amount }) => {
   const stripe = useStripe();

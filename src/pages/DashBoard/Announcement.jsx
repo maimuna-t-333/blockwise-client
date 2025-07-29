@@ -4,7 +4,7 @@ const Announcement = () => {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/announcements")
+    fetch("https://blockwise-server.vercel.app/announcements")
       .then(res => res.json())
       .then(data => setAnnouncements(data));
   }, []);

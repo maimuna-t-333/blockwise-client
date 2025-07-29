@@ -14,7 +14,7 @@ const DashboardLayout = () => {
     const fetchRole = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/agreements?email=${user?.email}`
+          `https://blockwise-server.vercel.app/api/agreements?email=${user?.email}`
         );
         if (res.status === 404) {
           setRole("user");
