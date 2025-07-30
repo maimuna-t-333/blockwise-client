@@ -60,7 +60,7 @@ const MakeAnnouncement = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-outline">
           Post Announcement
         </button>
       </form>

@@ -4,6 +4,7 @@ import useAxios from "./useAxios";
 
 const ADMIN_EMAIL = "admin@example.com";
 
+
 const useUserInfo = (refetchTrigger = 0) => {
   const { user } = useAuth();
   const [role, setRole] = useState(null);
@@ -18,7 +19,7 @@ const useUserInfo = (refetchTrigger = 0) => {
       }
 
       try {
-        if (user.email === ADMIN_EMAIL) {
+        if (user.email === ADMIN_EMAIL ) {
           setRole("admin");
         } else {
           const res = await axios.get(`/users/${user.email}`);

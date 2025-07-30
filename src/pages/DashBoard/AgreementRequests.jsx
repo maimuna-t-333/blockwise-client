@@ -6,22 +6,29 @@ const AgreementRequests = () => {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    axios.get("https://blockwise-server.vercel.app/agreements")
+    // Fetch all pending agreements
+    axios.get("https://blockwise-server.vercel.app/api/agreements/pending")
       .then(res => {
-        const pending = res.data.filter(req => req.status === "pending");
-        setRequests(pending);
+        setRequests(res.data || []);
+      })
+      .catch(err => {
+        toast.error("Failed to fetch agreement requests");
       });
   }, []);
 
   const handleDecision = async (id, email, accepted) => {
     try {
-      await axios.patch(`https://blockwise-server.vercel.app/agreements/respond/${id}`, {
+      const response = await axios.patch(`https://blockwise-server.vercel.app/api/agreements/respond/${id}`, {
         accepted,
         email,
       });
 
-      toast.success(`Request ${accepted ? "accepted" : "rejected"}`);
-      setRequests(prev => prev.filter(req => req._id !== id));
+      if (response.data.success) {
+        toast.success(`Request ${accepted ? "accepted" : "rejected"}`);
+        setRequests(prev => prev.filter(req => req._id !== id));
+      } else {
+        toast.error("Something went wrong. Try again.");
+      }
     } catch (err) {
       toast.error("Failed to process request");
     }
@@ -57,7 +64,7 @@ const AgreementRequests = () => {
                   <td>{req.blockName}</td>
                   <td>{req.apartmentNo}</td>
                   <td>{req.rent}</td>
-                  <td>{new Date(req._id.toString().substring(0, 8) * 1000).toLocaleDateString()}</td>
+                  <td>{new Date(parseInt(req._id.substring(0, 8), 16) * 1000).toLocaleDateString()}</td>
                   <td className="flex gap-2">
                     <button
                       onClick={() => handleDecision(req._id, req.email, true)}
@@ -83,3 +90,4 @@ const AgreementRequests = () => {
 };
 
 export default AgreementRequests;
+

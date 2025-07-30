@@ -26,6 +26,7 @@ const AdminProfile = () => {
       <h2 className="text-2xl font-semibold mb-4 text-center">Admin Profile</h2>
       <div className="space-y-3">
         <div><span className="font-medium">Name:</span> {adminData.name}</div>
+        
         <div><span className="font-medium">Email:</span> {adminData.email}</div>
         <div><span className="font-medium">Role:</span> {adminData.role}</div>
       </div>

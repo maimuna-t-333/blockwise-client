@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
-import useAuth from "../../hooks/useAuth";
+// import useAuth from "../../hooks/useAuth";
 import useUserInfo from "../../hooks/useUserInfo";
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import useAxios from "../../hooks/useAxios";
+import useAuth from "../../hooks/useAuth";
 
 const ADMIN_EMAIL = "admin@example.com";
+const ADMIN_PASSWORD="admiN123";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +18,7 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
 
-  const { signInUser, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const { role, loading } = useUserInfo();
   const navigate = useNavigate();
   const axios = useAxios();
@@ -35,7 +37,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn && !loading && role) {
-      if (role === "admin" || adminLoggedIn) {
+      if ( adminLoggedIn) {
         navigate("/dashboard/admin/profile");
       } else if (role === "member") {
         navigate("/dashboard/member/profile");
@@ -43,37 +45,31 @@ const Login = () => {
         navigate("/dashboard/user/profile");
       }
     }
+    console.log({ isLoggedIn, adminLoggedIn, role })
   }, [isLoggedIn, loading, role, adminLoggedIn, navigate]);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    try {
-      if (email === ADMIN_EMAIL) {
-        // Admin login flow
-        const res = await axios.post("/admin-login", { email, password });
+  try {
+    const res = await signIn(email, password); 
 
-        if (res.data.success) {
-          toast.success("Admin logged in successfully!");
-          setIsLoggedIn(true);
-          setAdminLoggedIn(true);
-        } else {
-          toast.error(res.data.message || "Invalid admin credentials");
-          setIsLoggedIn(false);
-        }
-      } else {
-        // Normal user login flow
-        const res = await signInUser(email, password);
-        toast.success("User logged in successfully!");
-
-        await saveUserToDB(res.user);
-        setIsLoggedIn(true);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || err.message || "Login failed");
-      setIsLoggedIn(false);
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      toast.success("Admin logged in successfully!");
+      setAdminLoggedIn(true);
+    } else {
+      toast.success("User logged in successfully!");
+      await saveUserToDB(res.user);
     }
-  };
+
+    setIsLoggedIn(true);
+  } catch (err) {
+    toast.error(err.response?.data?.message || err.message || "Login failed");
+    setIsLoggedIn(false);
+  }
+};
+
+
 
   const handleGoogleLogin = async () => {
     try {

@@ -26,10 +26,10 @@ const onSubmit = async (data) => {
       photoURL: data.photoURL
     };
 
-    axios.post('https://blockwise-server.vercel.app/users', savedUser);
-    navigate('/login')
+    await axios.post('https://blockwise-server.vercel.app/users', savedUser); // ✅ await added
 
     toast.success('Registration successful. Please login.');
+    navigate('/login'); // ⬅️ move navigation after toast
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {
       toast.error('Email is already in use');
@@ -39,6 +39,7 @@ const onSubmit = async (data) => {
     console.error(error);
   }
 };
+
 
   return (
     <div>
