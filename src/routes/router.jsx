@@ -28,6 +28,7 @@ import MakeAnnouncement from "../pages/DashBoard/MakeAnnouncement";
 import AgreementRequests from "../pages/DashBoard/AgreementRequests";
 import ManageCoupon from "../pages/DashBoard/ManageCoupon";
 import About from "../pages/About";
+import AddReview from "../pages/AddReview";
 
 const router = createBrowserRouter([
   {
@@ -43,9 +44,14 @@ const router = createBrowserRouter([
         element: <Apartments />,
       },
       {
-        path:'about',
+        path: 'about',
         element: <About></About>
-      }
+      },
+      {
+        path: 'addReview',
+        element: <PrivateRoute><AddReview></AddReview></PrivateRoute>
+      },
+
     ],
   },
   {
@@ -56,6 +62,7 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+
   {
     path: "dashboard",
     element: <PrivateRoute><DashboardRedirect /></PrivateRoute>,
