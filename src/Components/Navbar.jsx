@@ -26,7 +26,7 @@ const Navbar = () => {
       : "/dashboard/user";
 
   return (
-    <div className="navbar bg-[#f1f5f9] shadow-md px-4 md:px-26">
+    <div className="navbar sticky top-0 z-50 bg-[#f1f5f9] shadow-md px-4 md:px-26">
       {/* Left - Logo */}
       <div className="navbar-start">
         <Link to="/" className="normal-case text-xl flex items-center gap-2 font-bold">
