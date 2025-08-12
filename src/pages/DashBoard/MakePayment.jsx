@@ -1,30 +1,9 @@
-// import StripeProvider from "../../context/StripeProvider";
-// import CheckoutForm from "./CheckoutForm";
-
-// const MakePayment = () => {
-
-//   const amount = 1000;
-
-//   return (
-//     <div className="p-6 bg-white rounded shadow-md max-w-xl mx-auto">
-//       <h2 className="text-xl font-bold mb-4">Make Payment</h2>
-//       <StripeProvider>
-//         <CheckoutForm
-//           amount={amount}
-//         ></CheckoutForm>
-//       </StripeProvider>
-//     </div>
-//   );
-// };
-
-// export default MakePayment;
-
-
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import StripeProvider from "../../context/StripeProvider";
 import CheckoutForm from "./CheckoutForm";
+import axios from "axios";
 
 const MakePayment = () => {
   const { user } = useAuth();
@@ -53,10 +32,14 @@ const MakePayment = () => {
 
   const handleCouponApply = async () => {
     try {
-      const res = await axiosSecure.get(`/coupons/${coupon}`);
+      const res = await axios.get(`https://blockwise-server.vercel.app/api/coupons/${coupon.toUpperCase()}`);
+
+
       const couponData = res.data;
       if (couponData?.discount) {
-        const discountRate = couponData.discount;
+        // const discountRate = couponData.discount;
+        // const discounted = agreement.rent - (agreement.rent * discountRate / 100);
+        const discountRate = Number(couponData.discount); // <-- convert to number
         const discounted = agreement.rent - (agreement.rent * discountRate / 100);
         setDiscount(discountRate);
         setFinalAmount(discounted.toFixed(2));

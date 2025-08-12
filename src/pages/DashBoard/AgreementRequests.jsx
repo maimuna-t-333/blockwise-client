@@ -16,23 +16,30 @@ const AgreementRequests = () => {
       });
   }, []);
 
-  const handleDecision = async (id, email, accepted) => {
+
+
+
+  const handleDecision = async ({ id, email, accepted }) => {
+    console.log("Sending ID:", id);
     try {
-      const response = await axios.patch(`https://blockwise-server.vercel.app/api/agreements/respond/${id}`, {
-        accepted,
+      const { data } = await axios.patch(`https://blockwise-server.vercel.app/api/agreements/respond/${id}`, {
         email,
+        accepted,
       });
 
-      if (response.data.success) {
-        toast.success(`Request ${accepted ? "accepted" : "rejected"}`);
+      if (data.success) {
+        toast.success(`Request ${accepted ? "accepted" : "rejected"} successfully`);
         setRequests(prev => prev.filter(req => req._id !== id));
       } else {
-        toast.error("Something went wrong. Try again.");
+        toast.error(data.message || "Something went wrong");
       }
-    } catch (err) {
-      toast.error("Failed to process request");
+    } catch (error) {
+      console.error("Agreement error:", error);
+      toast.error("Failed to process the request");
     }
   };
+
+
 
   return (
     <div>
@@ -66,14 +73,20 @@ const AgreementRequests = () => {
                   <td>{req.rent}</td>
                   <td>{new Date(parseInt(req._id.substring(0, 8), 16) * 1000).toLocaleDateString()}</td>
                   <td className="flex gap-2">
+
+
                     <button
-                      onClick={() => handleDecision(req._id, req.email, true)}
+                      onClick={() =>
+                        handleDecision({ id: req._id, email: req.email, accepted: true })
+                      }
                       className="btn btn-sm btn-success"
                     >
                       Accept
                     </button>
                     <button
-                      onClick={() => handleDecision(req._id, req.email, false)}
+                      onClick={() =>
+                        handleDecision({ id: req._id, email: req.email, accepted: false })
+                      }
                       className="btn btn-sm btn-error"
                     >
                       Reject

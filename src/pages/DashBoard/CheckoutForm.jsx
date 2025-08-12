@@ -1,7 +1,6 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
-// import useAxios from "../hooks/useAxios"; // your custom axios hook
 
 const CheckoutForm = ({ amount }) => {
   const stripe = useStripe();
@@ -48,7 +47,7 @@ const CheckoutForm = ({ amount }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <CardElement />
+      <CardElement options={{ style: { base: { fontSize: '16px' } } }}  />
       <button type="submit" disabled={!stripe || processing} className="btn btn-primary">
         {processing ? "Processing..." : "Pay"}
       </button>

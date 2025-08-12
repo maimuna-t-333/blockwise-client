@@ -1,4 +1,3 @@
-// src/pages/Layout/DashboardRedirect.jsx
 import { Navigate } from "react-router";
 import useUserInfo from "../../hooks/useUserInfo";
 
