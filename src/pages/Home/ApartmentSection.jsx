@@ -23,7 +23,7 @@ const ApartmentSection = () => {
     fetchApartments();
   }, []);
 
-  if (loading) return <p className="text-center py-16 text-gray-500">Loading apartments...</p>;
+  if (loading) return <p className="text-center py-16 text-gray-500"><span className="loading loading-ball loading-xl"></span></p>;
   if (error) return <p className="text-center py-16 text-red-500">{error}</p>;
   if (apartments.length === 0) return <p className="text-center py-16 text-gray-500">No apartments available.</p>;
 

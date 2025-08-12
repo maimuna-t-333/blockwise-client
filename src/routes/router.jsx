@@ -29,6 +29,7 @@ import AgreementRequests from "../pages/DashBoard/AgreementRequests";
 import ManageCoupon from "../pages/DashBoard/ManageCoupon";
 import About from "../pages/About";
 import AddReview from "../pages/AddReview";
+import ErrorPage from "../pages/Errorpage";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       },
 
     ],
+  },
+  {
+    path:"*",
+    element: <ErrorPage></ErrorPage>
   },
   {
     path: "/login",
