@@ -27,6 +27,7 @@ import ManageMembers from "../pages/DashBoard/ManageMembers";
 import MakeAnnouncement from "../pages/DashBoard/MakeAnnouncement";
 import AgreementRequests from "../pages/DashBoard/AgreementRequests";
 import ManageCoupon from "../pages/DashBoard/ManageCoupon";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
         path: "apartments",
         element: <Apartments />,
       },
+      {
+        path:'about',
+        element: <About></About>
+      }
     ],
   },
   {

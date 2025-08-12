@@ -54,7 +54,7 @@ const Apartments = () => {
     };
 
     try {
-      const response = await axios.post("https://blockwise-server.vercel.app/agreements", agreementData);
+      const response = await axios.post("https://blockwise-server.vercel.app/api/agreements", agreementData);
       if (response.data.insertedId) {
         Swal.fire({
           icon: "success",

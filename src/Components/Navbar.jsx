@@ -40,6 +40,7 @@ const Navbar = () => {
         <ul className=" menu-horizontal px-1 gap-10 text-xl font-medium">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/apartments">Apartments</Link></li>
+          <li><Link to="/about">About</Link></li>
           {user && !loading && (
             <li><Link to={dashboardPath}>Dashboard</Link></li>
           )}
