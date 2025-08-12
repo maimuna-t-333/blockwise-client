@@ -72,7 +72,7 @@ const Apartments = () => {
   return (
     <div className="px-4 py-6 max-w-7xl mx-auto">
       {/* Filter section */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 justify-center mt-8 mb-6">
+      <div className="flex flex-col sm:flex-row items-center max-w-7xl gap-10 justify-center mt-8 mb-6">
         <input
           type="number"
           placeholder="Minimum Rent"

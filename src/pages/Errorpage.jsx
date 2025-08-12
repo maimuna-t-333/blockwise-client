@@ -14,7 +14,7 @@ const Errorpage = () => {
       </h2>
 
       <p className="text-gray-600 mb-10 max-w-md mx-auto">
-        Please check the URL or try refreshing the page. If the problem persists, contact support.
+        Please check the URL or try refreshing the page. 
       </p>
 
       <Link
