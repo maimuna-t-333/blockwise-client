@@ -5,7 +5,7 @@ const LocationDetails = () => {
   const position = [23.8103, 90.4125]; // Example: Dhaka, Bangladesh
 
   return (
-    <section className="bg-[#f9fafb] py-16 px-4 md:px-10 lg:px-20 font-sans">
+    <section className="bg-[#f9fafb] py-16 px-6 md:px-10 lg:px-20 font-sans">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
            Apartment Location & Directions
