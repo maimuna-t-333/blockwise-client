@@ -163,8 +163,8 @@ const Navbar = () => {
       {/* Right - Auth + Mobile Dropdown */}
       <div className="navbar-end flex items-center gap-2">
         {/* Mobile Menu */}
-        <div className="dropdown lg:hidden">
-          <div tabIndex={0} role="button" className="btn btn-ghost">
+        <div className="dropdown  lg:hidden">
+          <div tabIndex={0} role="button" className="btn  btn-ghost">
             <FaBars size={20} />
           </div>
           <ul
