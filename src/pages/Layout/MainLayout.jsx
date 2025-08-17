@@ -5,6 +5,7 @@ import LocationDetails from '../Home/LocationDetails';
 import CouponSection from '../Home/CouponSection';
 import ApartmentSection from '../Home/ApartmentSection';
 import AboutUs from '../Home/AboutUs';
+import Reviews from '../Home/Review';
 
 const MainLayout = () => {
     return (
@@ -16,6 +17,7 @@ const MainLayout = () => {
             <ApartmentSection></ApartmentSection>
             <LocationDetails></LocationDetails>
             <CouponSection></CouponSection>
+            <Reviews></Reviews>
             
         </div>
     );
