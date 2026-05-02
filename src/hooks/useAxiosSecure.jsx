@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { auth} from "../Firebase/firebase.config"
 
 const axiosSecure = axios.create({
-  baseURL: "https://blockwise-server.vercel.app/api", 
-  withCredentials: true,
+  baseURL: "https://blockwise-server.vercel.app", 
+  // withCredentials: true,
 });
 
 const useAxiosSecure = () => {
@@ -13,14 +14,14 @@ const useAxiosSecure = () => {
   useEffect(() => {
     // Request Interceptor
     const requestInterceptor = axiosSecure.interceptors.request.use(
-      config => {
-        const token = localStorage.getItem("access-token");
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+      async(config) => {
+        const currentUser=auth.currentUser;
+        if(currentUser){
+          const token=await currentUser.getIdToken();
+          config.headers.Authorization=`Bearer ${token}`;
         }
         return config;
       },
-      error => Promise.reject(error)
     );
 
     // Optional: Response Interceptor to handle auth errors globally

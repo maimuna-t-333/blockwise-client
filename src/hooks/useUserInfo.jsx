@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import useAuth from "./useAuth";
-import useAxios from "./useAxios";
-
-const ADMIN_EMAIL = "admin@example.com";
-
+import useAxiosSecure from "./useAxiosSecure";
 
 const useUserInfo = (refetchTrigger = 0) => {
   const { user } = useAuth();
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
-  const axios = useAxios();
+  const axiosSecure=useAxiosSecure();
 
   useEffect(() => {
     const fetchRole = async () => {
@@ -19,12 +16,8 @@ const useUserInfo = (refetchTrigger = 0) => {
       }
 
       try {
-        if (user.email === ADMIN_EMAIL ) {
-          setRole("admin");
-        } else {
-          const res = await axios.get(`/users/${user.email}`);
-          setRole(res.data?.role || "user");
-        }
+        const res=await axiosSecure.get(`/users/${user.email}`);
+        setRole(res.data.role || "user");
       } catch (err) {
         console.error("Failed to fetch role", err);
         setRole("user");
