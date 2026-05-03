@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import useAuth from "./useAuth";
 import useAxiosSecure from "./useAxiosSecure";
+import { UserRole } from "../types";
+import useAuth from "./useAuth";
 
 const useUserInfo = (refetchTrigger = 0) => {
   const { user } = useAuth();
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
   const axiosSecure=useAxiosSecure();
 
