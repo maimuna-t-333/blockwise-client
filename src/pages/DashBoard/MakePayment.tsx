@@ -4,17 +4,17 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import StripeProvider from "../../context/StripeProvider";
 import CheckoutForm from "./CheckoutForm";
 import axios from "axios";
+import { Agreement } from "../../types";
 
 const MakePayment = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-
-  const [agreement, setAgreement] = useState(null);
+  const [agreement, setAgreement] = useState<Agreement | null>(null);
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState("");
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [finalAmount, setFinalAmount] = useState(0);
+  const [finalAmount, setFinalAmount] = useState<number>(0);
   const [couponError, setCouponError] = useState("");
 
   useEffect(() => {
@@ -31,18 +31,15 @@ const MakePayment = () => {
   }, [user?.email]);
 
   const handleCouponApply = async () => {
+    if(!agreement) return;
     try {
       const res = await axios.get(`https://blockwise-server.vercel.app/api/coupons/${coupon.toUpperCase()}`);
-
-
       const couponData = res.data;
       if (couponData?.discount) {
-        // const discountRate = couponData.discount;
-        // const discounted = agreement.rent - (agreement.rent * discountRate / 100);
         const discountRate = Number(couponData.discount); // <-- convert to number
         const discounted = agreement.rent - (agreement.rent * discountRate / 100);
         setDiscount(discountRate);
-        setFinalAmount(discounted.toFixed(2));
+        setFinalAmount(Number(discounted.toFixed(2)));
         setCouponError("");
       } else {
         setCouponError("Invalid coupon");
@@ -96,7 +93,7 @@ const MakePayment = () => {
 
       {/* Stripe Checkout */}
       <StripeProvider>
-        <CheckoutForm amount={parseFloat(finalAmount)} />
+        <CheckoutForm amount={finalAmount} month={month} />
       </StripeProvider>
     </div>
   );

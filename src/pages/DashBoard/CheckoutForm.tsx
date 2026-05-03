@@ -1,8 +1,13 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { useState } from "react";
+import React, { useState } from "react";
 import useAxios from "../../hooks/useAxios";
 
-const CheckoutForm = ({ amount }) => {
+interface CheckoutFormProps {
+  amount:number;
+  month: string;
+}
+
+const CheckoutForm = ({ amount, month }:CheckoutFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const axios = useAxios();
@@ -11,7 +16,7 @@ const CheckoutForm = ({ amount }) => {
   const [success, setSuccess] = useState("");
   const [processing, setProcessing] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
@@ -26,15 +31,15 @@ const CheckoutForm = ({ amount }) => {
       // 2. Confirm card payment
       const result = await stripe.confirmCardPayment(data.clientSecret, {
         payment_method: {
-          card: elements.getElement(CardElement),
+          card: CardElement as any,
         },
       });
 
       if (result.error) {
-        setError(result.error.message);
+        setError(result.error.message ?? "Payment failed.");
       } else {
         if (result.paymentIntent.status === "succeeded") {
-          setSuccess("Payment successful!");
+          setSuccess(`Payment successful for ${month}!`);
           // TODO: save payment record to DB
         }
       }
