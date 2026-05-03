@@ -1,13 +1,12 @@
-
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
+import { Apartment } from "../../types";
 
 const ApartmentSection = () => {
-  const [apartments, setApartments] = useState([]);
+  const [apartments, setApartments] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchApartments = async () => {
@@ -48,25 +47,20 @@ const ApartmentSection = () => {
             >
               <img
                 src={apt.apartmentImage || "https://via.placeholder.com/400x300?text=No+Image"}
-                alt={apt.title || `Apartment ${apt.apartmentNo}`}
+                alt={`Apartment ${apt.apartmentNo}`}
                 className="h-48 w-full object-cover"
               />
 
               <div className="flex flex-col flex-grow p-6 bg-white">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {apt.title || `Apartment ${apt.apartmentNo}`}
+                  {`Apartment ${apt.apartmentNo}`}
                 </h3>
 
                 <p className="text-gray-700 flex-grow text-sm mb-4 line-clamp-3">
                   {apt.description || "This apartment offers great comfort and convenience with modern amenities."}
                 </p>
                 <Link to='/apartments' className="mt-auto btn-outline  text-black border py-2 rounded-lg font-semibold hover:cursor-pointer transition-colors text-center">
-                                <button
-
-                  aria-label={`See more details about ${apt.title || `Apartment ${apt.apartmentNo}`}`}
-                >
-                  See More
-                </button>
+                      See more
                 </Link>
 
 

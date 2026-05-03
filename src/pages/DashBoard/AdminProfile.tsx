@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { User } from "../../types";
+
+interface AdminStates{
+  totalRooms:number;
+  availableRooms:number;
+  availablePercentage:number;
+  unavailableRooms:number;
+  unavailablePercentage:number;
+  totalUsers:number;
+  members:number;
+}
 
 const AdminProfile = () => {
   const { user } = useAuth();
-  const [adminData, setAdminData] = useState(null);
-  const [stats, setStats] = useState(null);
+  const [adminData, setAdminData] = useState<User | null>(null);
+  const [stats, setStats] = useState<AdminStates | null>(null);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -28,7 +39,7 @@ const AdminProfile = () => {
     <div className="max-w-md mx-auto bg-white shadow-md rounded-2xl p-6 mt-6">
       <h2 className="text-2xl font-semibold mb-4 text-center">Admin Profile</h2>
       <div className="space-y-3">
-        <div><span className="font-medium">Name:</span> {adminData.name}</div>
+        <div><span className="font-medium">Name:</span> {adminData.displayName || adminData.name}</div>
         <div><span className="font-medium">Email:</span> {adminData.email}</div>
         <div><span className="font-medium">Role:</span> {adminData.role}</div>
 

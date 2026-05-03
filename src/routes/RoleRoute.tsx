@@ -1,8 +1,15 @@
 import useUserInfo from "../hooks/useUserInfo";
 import useAuth from "../hooks/useAuth"; // to get current user
+import React from "react";
+import { UserRole } from "../types";
 
-const RoleRoute = ({ children, allowedRole }) => {
-  const { user, loading: authLoading } = useAuth(); // get logged-in user
+interface RoleRouteProps{
+  children:React.ReactNode;
+  allowedRole:UserRole;
+}
+
+const RoleRoute = ({ children, allowedRole }: RoleRouteProps) => {
+  const { loading: authLoading } = useAuth(); // get logged-in user
   const { role, loading: roleLoading } = useUserInfo(); // pass email
 
   if (authLoading || roleLoading) return <span>Loading...</span>;

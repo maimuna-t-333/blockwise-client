@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { User } from "../../types";
 
 const ManageMembers = () => {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMembers = async () => {
@@ -18,7 +19,7 @@ const ManageMembers = () => {
     }
   };
 
-  const handleRemoveMember = async (email) => {
+  const handleRemoveMember = async (email:string) => {
     const confirm = window.confirm("Are you sure you want to remove this member?");
     if (!confirm) return;
 
@@ -60,7 +61,7 @@ const ManageMembers = () => {
               {members.map((user, index) => (
                 <tr key={user._id}>
                   <td>{index + 1}</td>
-                  <td>{user.name}</td>
+                  <td>{user.displayName || user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>

@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { Coupon } from "../../types";
+
+interface CouponForm{
+  code:string;
+  discount:string;
+  description:string;
+}
 
 const ManageCoupon = () => {
-  const [coupons, setCoupons] = useState([]);
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CouponForm>({
     code: "",
     discount: "",
     description: "",
@@ -17,7 +24,7 @@ const ManageCoupon = () => {
     });
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await axios.post("https://blockwise-server.vercel.app/coupons", formData);

@@ -1,5 +1,5 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import React, { useState } from "react";
+import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
 
 interface CheckoutFormProps {

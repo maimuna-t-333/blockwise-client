@@ -1,12 +1,14 @@
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { IoHomeOutline } from "react-icons/io5";
 import { FiUser, FiDollarSign, FiClock, FiUsers, FiSpeaker, FiFileText, FiGift } from "react-icons/fi";
-import useUserInfo from "../../hooks/useUserInfo";
+import { UserRole } from "../../types";
 
-const Sidebar = () => {
-  const { role } = useUserInfo();
+interface SidebarProps {
+  role: UserRole | null;
+}
 
-  const linkClass = ({ isActive }) =>
+const Sidebar = ({role}: SidebarProps) => {
+  const linkClass = ({ isActive }:{isActive:boolean}) =>
     `flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-500 ${isActive ? "bg-gray-500 font-semibold" : ""
     }`;
 

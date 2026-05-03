@@ -1,37 +1,36 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
-
 import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-
 import useAuth from '../../hooks/useAuth';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
 
+interface RegisterForm{
+  name:string;
+  email:string;
+  password:string;
+  photoURL?:string;
+}
+
 const Register = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>();
   const { createUser } = useAuth();
   const navigate = useNavigate();
 
-const onSubmit = async (data) => {
+const onSubmit = async (data: RegisterForm) => {
   try {
-    const result = await createUser(data.email, data.password);
-    const loggedUser = result.user;
-
-    // Save user to DB
-    const savedUser = {
-      name: data.name,
-      email: data.email,
-      photoURL: data.photoURL
-    };
-
-    await axios.post('https://blockwise-server.vercel.app/users', savedUser); // ✅ await added
-
+    await createUser(data.email, data.password);
+    await axios.post('https://blockwise-server.vercel.app/users', {
+      name:data.name,
+      email:data.email,
+      photoURL:data.photoURL,
+  }); 
     toast.success('Registration successful. Please login.');
-    navigate('/login'); // ⬅️ move navigation after toast
+    navigate('/login'); 
   } catch (error) {
-    if (error.code === 'auth/email-already-in-use') {
+    const err=error as {code?:string};
+    if (err.code === 'auth/email-already-in-use') {
       toast.error('Email is already in use');
     } else {
       toast.error('Registration failed');

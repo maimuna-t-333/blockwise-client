@@ -1,4 +1,3 @@
-import React from 'react';
 import Banner from '../Home/Banner';
 import AboutBuilding from '../Home/AboutBuilding';
 import LocationDetails from '../Home/LocationDetails';

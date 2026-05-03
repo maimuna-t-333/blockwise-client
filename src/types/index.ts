@@ -3,6 +3,7 @@ export type UserRole= 'user' |'member'| 'admin';
 export interface User{
     _id:string;
     email:string;
+    name:string;
     displayName?:string;
     photoURL?:string;
     role:UserRole;
@@ -15,7 +16,7 @@ export interface Apartment{
     floorNo:string;
     rent:number;
     apartmentImage?:string;
-    
+    description?:string;
 }
 
 export interface Agreement {

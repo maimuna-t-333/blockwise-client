@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { Agreement } from "../../types";
+
+interface DecisionParams{
+  id:string;
+  email:string;
+  accepted:boolean;
+}
 
 const AgreementRequests = () => {
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState<Agreement[]>([]);
 
   useEffect(() => {
     // Fetch all pending agreements
@@ -11,15 +18,12 @@ const AgreementRequests = () => {
       .then(res => {
         setRequests(res.data || []);
       })
-      .catch(err => {
+      .catch(() => {
         toast.error("Failed to fetch agreement requests");
       });
   }, []);
 
-
-
-
-  const handleDecision = async ({ id, email, accepted }) => {
+  const handleDecision = async ({ id, email, accepted }: DecisionParams) => {
     console.log("Sending ID:", id);
     try {
       const { data } = await axios.patch(`https://blockwise-server.vercel.app/api/agreements/respond/${id}`, {
@@ -71,13 +75,13 @@ const AgreementRequests = () => {
                   <td>{req.blockName}</td>
                   <td>{req.apartmentNo}</td>
                   <td>{req.rent}</td>
-                  <td>{new Date(parseInt(req._id.substring(0, 8), 16) * 1000).toLocaleDateString()}</td>
+                  <td>{new Date(parseInt(req._id!.substring(0, 8), 16) * 1000).toLocaleDateString()}</td>
                   <td className="flex gap-2">
 
 
                     <button
                       onClick={() =>
-                        handleDecision({ id: req._id, email: req.email, accepted: true })
+                        handleDecision({ id: req._id!, email: req.email, accepted: true })
                       }
                       className="btn btn-sm btn-success"
                     >
@@ -85,7 +89,7 @@ const AgreementRequests = () => {
                     </button>
                     <button
                       onClick={() =>
-                        handleDecision({ id: req._id, email: req.email, accepted: false })
+                        handleDecision({ id: req._id!, email: req.email, accepted: false })
                       }
                       className="btn btn-sm btn-error"
                     >

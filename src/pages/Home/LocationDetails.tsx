@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaMapMarkerAlt, FaBusAlt, FaTrain, FaCar } from "react-icons/fa";
 
 const LocationDetails = () => {
-  const position = [23.8103, 90.4125]; // Example: Dhaka, Bangladesh
+  const position = [23.8103, 90.4125] as [number, number];
 
   return (
     <section className="bg-[#f9fafb] py-16 px-6 md:px-10 lg:px-20 font-sans">

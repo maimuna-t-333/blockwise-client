@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Announcement as AnnouncementType } from "../../types";
 
 const Announcement = () => {
-  const [announcements, setAnnouncements] = useState([]);
+  const [announcements, setAnnouncements] = useState<AnnouncementType[]>([]);
 
   useEffect(() => {
     fetch("https://blockwise-server.vercel.app/announcements")
@@ -16,7 +17,7 @@ const Announcement = () => {
         {announcements.map((a) => (
           <li key={a._id} className="p-4 border rounded shadow">
             <h3 className="text-lg font-semibold">{a.title}</h3>
-            <p>{a.message}</p>
+            <p>{a.description}</p>
             <small className="text-gray-500">
               {new Date(a.date).toLocaleDateString()}
             </small>

@@ -1,20 +1,35 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
+interface Review {
+  id:number;
+  name:string;
+  role:string;
+  review:string;
+  image:string;
+}
+
+interface ReviewForm {
+  name:string;
+  role:string;
+  review:string;
+  image:string;
+}
 
 const AddReview = () => {
-  const [reviews, setReviews] = useState([]);
-  const [formData, setFormData] = useState({
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [formData, setFormData] = useState<ReviewForm>({
     name: "",
     role: "",
     review: "",
     image: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.name || !formData.role || !formData.review) {
@@ -77,7 +92,7 @@ const AddReview = () => {
             placeholder="Write your review..."
             value={formData.review}
             onChange={handleChange}
-            rows="4"
+            rows={4}
             className="border rounded-lg p-3 w-full mt-4"
             required
           ></textarea>

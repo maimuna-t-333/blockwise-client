@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import Lottie from "lottie-react";
 import animationData from "../assets/404 Error - Doodle animation.json";

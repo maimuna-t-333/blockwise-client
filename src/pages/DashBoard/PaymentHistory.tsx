@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { Payment } from "../../types";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [payments, setPayments] = useState([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
 
   useEffect(() => {
     if (user?.email) {
@@ -33,7 +34,7 @@ const PaymentHistory = () => {
                 <td>{i + 1}</td>
                 <td>{new Date(payment.date).toLocaleString()}</td>
                 <td>${Number(payment.amount).toFixed(2)}</td>
-                <td>{payment.status}</td>
+                <td>{payment.month}</td>
               </tr>
             ))}
           </tbody>

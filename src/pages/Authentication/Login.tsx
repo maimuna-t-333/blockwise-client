@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { FaGoogle } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -8,6 +8,7 @@ import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import { User } from "../../types";
 
 const ADMIN_EMAIL = "admin@example.com";
 const ADMIN_PASSWORD="admiN123";
@@ -17,13 +18,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminLoggedIn, setAdminLoggedIn] = useState(false);
-
   const { signIn, signInWithGoogle } = useAuth();
   const { role, loading } = useUserInfo();
   const navigate = useNavigate();
   const axios = useAxios();
 
-  const saveUserToDB = async (user) => {
+  const saveUserToDB = async (user:User) => {
     try {
       await axios.post("/users", {
         name: user.displayName || "No Name",
@@ -31,7 +31,7 @@ const Login = () => {
       });
       console.log("User saved to DB:", user.email);
     } catch (err) {
-      console.log("User save failed/skipped:", err.message);
+      console.log("User save failed/skipped:", (err as Error).message);
     }
   };
 
@@ -48,12 +48,10 @@ const Login = () => {
     console.log({ isLoggedIn, adminLoggedIn, role })
   }, [isLoggedIn, loading, role, adminLoggedIn, navigate]);
 
-const handleLogin = async (e) => {
+const handleLogin = async (e:React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-
   try {
     const res = await signIn(email, password); 
-
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       toast.success("Admin logged in successfully!");
       setAdminLoggedIn(true);
@@ -64,12 +62,10 @@ const handleLogin = async (e) => {
 
     setIsLoggedIn(true);
   } catch (err) {
-    toast.error(err.response?.data?.message || err.message || "Login failed");
+    toast.error( (err as Error).message || "Login failed");
     setIsLoggedIn(false);
   }
 };
-
-
 
   const handleGoogleLogin = async () => {
     try {
@@ -79,7 +75,7 @@ const handleLogin = async (e) => {
       setEmail(res.user.email);
       setIsLoggedIn(true);
     } catch (err) {
-      toast.error(err.message);
+      toast.error((err as Error).message);
     }
   };
 

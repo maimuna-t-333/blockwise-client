@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios"; // Your custom Axios hook
+import { User } from "../../types";
 
 const Profile = () => {
   const { user } = useAuth();
   const axiosPublic = useAxios();
-  const [dbUser, setDbUser] = useState(null);
+  const [dbUser, setDbUser] = useState<User | null>(null);
 
   // Fetch user info from backend using email
   useEffect(() => {
@@ -33,11 +34,11 @@ const Profile = () => {
         <div className="flex items-center space-x-4">
           <img
             src={dbUser.photoURL || "https://via.placeholder.com/100"}
-            alt={dbUser.name}
+            alt={dbUser.displayName || dbUser.name}
             className="w-24 h-24 rounded-full border-2 object-cover"
           />
           <div className="space-y-2">
-            <p><strong>Name:</strong> {dbUser.name}</p>
+            <p><strong>Name:</strong> {dbUser.displayName || dbUser.name}</p>
             <p><strong>Email:</strong> {dbUser.email}</p>
             <p><strong>Agreement Accept Date:</strong> {agreementAcceptDate}</p>
             <p><strong>Rented Apartment:</strong> none</p>
@@ -56,4 +57,3 @@ const Profile = () => {
 };
 
 export default Profile;
-

@@ -2,10 +2,11 @@ import { Outlet, useNavigate } from "react-router";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import { UserRole } from "../../types";
 
 const DashboardLayout = () => {
   const { user, loading: authLoading } = useAuth();
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -28,7 +29,6 @@ const DashboardLayout = () => {
         setLoading(false);
       }
     };
-
     if (user?.email) {
       fetchRole();
     }
