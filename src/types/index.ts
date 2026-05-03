@@ -55,6 +55,6 @@ export interface Coupon {
 }
 
 export interface ApartmentResponse {
-    apartment:Apartment[];
+    apartments:Apartment[];
     total:number;
 }

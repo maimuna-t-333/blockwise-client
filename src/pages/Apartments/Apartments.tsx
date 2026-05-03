@@ -4,40 +4,39 @@ import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
-import useUserInfo from "../../hooks/useUserInfo";
+import { Apartment, ApartmentResponse } from "../../types";
 
 const Apartments = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [apartments, setApartments] = useState([]);
+  const [apartments, setApartments] = useState<Apartment[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [minRent, setMinRent] = useState("");
   const [maxRent, setMaxRent] = useState("");
   const [refreshRole, setRefreshRole] = useState(0);
-  const { role } = useUserInfo(refreshRole);
 
   const limit = 6;
 
   useEffect(() => {
-    const query = { page, limit };
+    const query: Record<string, string | number>= { page, limit };
     if (minRent && maxRent) {
       query.minRent = minRent;
       query.maxRent = maxRent;
     }
 
     axios
-      .get("https://blockwise-server.vercel.app/apartments", { params: query })
+      .get<ApartmentResponse>("https://blockwise-server.vercel.app/apartments", { params: query })
       .then((res) => {
         setApartments(res.data.apartments);
         setTotal(res.data.total);
       })
       .catch((err) => console.error(err));
-  }, [page, minRent, maxRent]);
+  }, [page, minRent, maxRent, refreshRole]);
 
   const totalPages = Math.ceil(total / limit);
 
-  const handleAgreement = async (apartment) => {
+  const handleAgreement = async (apartment: Apartment) => {
     if (!user) {
       toast.error("Please login first to apply.");
       navigate("/login");
@@ -46,7 +45,7 @@ const Apartments = () => {
 
     const agreementData = {
       email: user.email,
-      name: user.displayName || user.name,
+      name: user.displayName || user.email,
       apartmentNo: apartment.apartmentNo,
       floorNo: apartment.floorNo,
       blockName: apartment.blockName,
@@ -64,8 +63,8 @@ const Apartments = () => {
         setRefreshRole((prev) => prev + 1); // refresh user role
       }
     } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Failed to apply for agreement.");
+      const err=error as {response?: {data?:{message?:string}}};
+      toast.error(err.response?.data?.message || "Failed to apply for agreement.");
     }
   };
 
