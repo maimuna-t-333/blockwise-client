@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { Agreement } from "../../types";
 
 const MemberProfile = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [agreement, setAgreement] = useState(null);
+  const [agreement, setAgreement] = useState<Agreement | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,8 +28,8 @@ const MemberProfile = () => {
     <div className="p-6 bg-white rounded shadow-md max-w-xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-center">My Profile</h2>
     <img
-  src={user.photoURL || "https://via.placeholder.com/100"}
-  alt={user.displayName || agreement.name}
+  src={user?.photoURL || "https://via.placeholder.com/100"}
+  alt={user?.displayName || agreement.name}
   className="w-24 h-24 rounded-full border-2 object-cover  mb-4"
 />
       {/* User Info */}

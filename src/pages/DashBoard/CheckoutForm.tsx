@@ -29,6 +29,7 @@ const CheckoutForm = ({ amount, month }:CheckoutFormProps) => {
       const { data } = await axios.post("/create-payment-intent", { amount });
 
       // 2. Confirm card payment
+      
       const result = await stripe.confirmCardPayment(data.clientSecret, {
         payment_method: {
           card: CardElement as any,
